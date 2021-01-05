@@ -1,3 +1,5 @@
+
+const PORT = process.env.PORT || 5000;
 var express = require("express");
 var bodyParser = require('body-parser');
 var cors = require("cors");
@@ -43,10 +45,8 @@ var userSchema = new mongoose.Schema({
     email: String,
     password: String,
     phone: String,
-    nationality: String,
-    userId:String,
     gender: String,
-    
+
 
     createdOn: { type: Date, 'default': Date.now }
 });
@@ -66,9 +66,7 @@ app.post("/signup", (req, res, next) => {
         || !req.body.email
         || !req.body.password
         || !req.body.phone
-        || !req.body.gender
-        || !req.body.userId
-        || !req.body.nationality) {
+        || !req.body.gender) {
 
         res.status(403).send(`
             please send name, email, passwod, phone and gender in json body.
@@ -77,9 +75,7 @@ app.post("/signup", (req, res, next) => {
                 "name": "mobeen",
                 "email": "mobeengrs@gmail.com",
                 "password": "abc",
-                "phone": "03001234567",
-                "nationality":"Pakistani",
-                "userId":"02144",
+                "phone": "03001234567",    
                 "gender": "Male"
             }`)
         return;
@@ -90,14 +86,14 @@ app.post("/signup", (req, res, next) => {
         "email": req.body.email,
         "password": req.body.password,
         "phone": req.body.phone,
-        "nationality":req.body.nationality,
-        "userId":req.body.userId,
         "gender": req.body.gender,
     })
 
     newUser.save((err, data) => {
         if (!err) {
-            res.send("user created")
+            res.send({
+                message: "User is Created"
+            })
         } else {
             console.log(err);
             res.status(500).send("user create error, " + err)
@@ -105,7 +101,6 @@ app.post("/signup", (req, res, next) => {
     });
 })
 
-const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log("server is running on: ", PORT);
 })
