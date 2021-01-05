@@ -6,6 +6,7 @@ var cors = require("cors");
 var morgan = require("morgan");
 const mongoose = require("mongoose");
 const { stringify } = require("querystring");
+const path = require("path")
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -59,6 +60,7 @@ app.use(bodyParser.json());
 app.use(cors());
 app.use(morgan('dev'));
 
+app.use("/", express.static(path.resolve(path.join(__dirname, "public"))));
 
 app.post("/signup", (req, res, next) => {
 
